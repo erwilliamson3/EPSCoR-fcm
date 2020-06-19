@@ -35,8 +35,8 @@ for(file1) {
   blanks$hetbacteria <-as.character(blanks$hetbacteria)
   blanks$hetbacteria <-as.numeric(blanks$hetbacteria)
   mean(blanks$pico)
-  unstained <- subset(file1, grepl("_sybr", file1$sample_id))
-  stained <- subset(file1, !grepl("_sybr", file1$sample_id))
+  unstained <- subset(file1, !grepl("_sybr", file1$sample_id))
+  stained <- subset(file1, grepl("_sybr", file1$sample_id))
   unstained <- subset(unstained, !grepl("blank", unstained$sample_id))
   stained <- subset(stained, !grepl("blank", stained$sample_id))
   stained$synecho <- NA
@@ -79,9 +79,10 @@ file2 <- rbind(stained,unstained)
 
 library(RColorBrewer)
 coul <- brewer.pal(3, "Set4") 
-barplot(height=stained$hetbacteria, names=stained$sample_id, col=coul)
+barplot(height=stained$hetbacteria, names=stained$sample_id, col=coul, main="Heterotrophic bacteria concentrations")
 
-barplot(height=unstained$synecho, names=unstained$sample_id, col=coul)  
+barplot(height=unstained$synecho, names=unstained$sample_id, col=coul, main="Synecho concentrations")  
 
-ggplot(data=na.omit(file2), aes(x=file2$sample_id, y=file2$hetbacteria)) +
-  geom_bar(stat="identity")
+
+
+write.csv(file2, "/Users/Emily/Desktop", row.names = FALSE)
