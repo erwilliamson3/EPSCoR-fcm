@@ -1,7 +1,7 @@
 library(dplyr)
 library(tidyverse)
 library(ggrepel)
-library(ggplot2)
+
 #Importing one file to test filtering 
 file1<-read.csv("EPSCoRJune.csv") 
 
@@ -29,16 +29,15 @@ for(file1) {
   blanks$pico <-as.character(blanks$pico)
   blanks$pico <-as.numeric(blanks$pico)
   blanks$nano <-as.character(blanks$nano)
-  blanks$nano <-as.numeric(blanks$nano)
-  blanks$synecho <-as.character(blanks$synecho)
-  blanks$synecho <-as.numeric(blanks$synecho)
-  blanks$hetbacteria <-as.character(blanks$hetbacteria)
-  blanks$hetbacteria <-as.numeric(blanks$hetbacteria)
-  mean(blanks$pico)
+blanks$nano <-as.numeric(blanks$nano)
+blanks$synecho <-as.character(blanks$synecho)
+blanks$synecho <-as.numeric(blanks$synecho)
+blanks$hetbacteria <-as.character(blanks$hetbacteria)
+blanks$hetbacteria <-as.numeric(blanks$hetbacteria)
+mean(blanks$pico)
+  unstained <- subset(file1, grepl("_sybr", file1$sample_id))
   unstained <- subset(file1, !grepl("_sybr", file1$sample_id))
-  stained <- subset(file1, grepl("_sybr", file1$sample_id))
   unstained <- subset(unstained, !grepl("blank", unstained$sample_id))
-  stained <- subset(stained, !grepl("blank", stained$sample_id))
   stained$synecho <- NA
   unstained$hetbacteria <- NA
   unstained$pico<-as.character(unstained$pico)
@@ -72,17 +71,8 @@ for(file1) {
   stained$hetbacteria <- stained$hetbacteria - blankhet
 }
 
-
-
 file2 <- rbind(stained,unstained)
 #this file is now complete, with blanks subtracted and some values set to NA.
 
-library(RColorBrewer)
-coul <- brewer.pal(3, "Set4") 
-barplot(height=stained$hetbacteria, names=stained$sample_id, col=coul, main="Heterotrophic bacteria concentrations")
 
-barplot(height=unstained$synecho, names=unstained$sample_id, col=coul, main="Synecho concentrations")  
-
-
-
-write.csv(file2, "/Users/Emily/Desktop", row.names = FALSE)
+    
